@@ -1,8 +1,17 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 
-app.post("/", (req, res) => res.send("Express on Vercel"));
+app.use(express.json());
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
+app.post('/api/index', (req, res) => {
+  const { data } = req.body;
+
+  if (!data || typeof data !== 'string') {
+    return res.status(400).json({ error: 'Invalid input. Expecting { data: "string" }' });
+  }
+
+  const word = data.split('').sort(); 
+  res.json({ word });
+});
 
 module.exports = app;
